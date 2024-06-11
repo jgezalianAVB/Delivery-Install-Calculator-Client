@@ -1,0 +1,85 @@
+table {
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+.data_table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.data_table td {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+.data_table th {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+.data_table .data_table-cly1 {
+  text-align: left;
+  vertical-align: middle;
+}
+.data_table .data_table-mx2f {
+  background-color: #d9e1f2;
+  color: #f00;
+  text-align: center;
+  vertical-align: middle;
+}
+.data_table #item_data {
+  background-color: #d9e1f2;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.data_table .member_input_td {
+  background-color: #ff0;
+  text-align: center;
+  vertical-align: bottom;
+}
+.data_table .data_table-p8v2 {
+  background-color: #ff0;
+  color: #f00;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+#sum_container {
+    display: flex;              /* establish flex container */
+    flex-direction: column;     /* stack flex items vertically */
+    justify-content: center;    /* center items vertically, in this case */
+    align-items: center;        /* center items horizontally, in this case */
+    height: 150px;
+  
+}
+
+#sum_display {
+    margin: 5px;
+    text-align: center;
+    font-size: larger;
+    color: blue;
+}
+
+#sum_explanation {
+    font-size: large;
+    width: 600px;
+    margin: 5px;
+    text-align: center;
+}
