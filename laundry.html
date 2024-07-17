@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="style.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="helpers.js"></script>
+	<script>
+		const services = [
+			"delivery_charges",
+			"haul_away",
+			"otr_install",
+			"dw_install",
+			"gas_dryer_install_no_steam",
+			"gas_dryer_install_with_steam",
+			"gas_range_install",
+			"rubber_fill_hose",
+			"ss_fill_hose_set",
+			"vent_kit",
+			"dryer_cord",
+			"range_cord",
+			"dw_kit",
+			"h2o_hook_up",
+			"four_piece_delivery",
+		];
+
+		window.onload = async (event) => {
+
+			await $.getJSON("https://nodetest-f6jnhptmxa-uc.a.run.app/laundry", function (result) {
+				if (localStorage.getItem("laundry_display_data") != null) {
+					localStorage.removeItem("laundry_display_data");
+				}
+
+				let table_display_data = result;
+
+				localStorage.setItem(
+					"laundry_display_data",
+					JSON.stringify(table_display_data)
+				);
+			});
+
+			table_display_data = JSON.parse(
+				localStorage.getItem("laundry_display_data")
+			);
+
+			const member_prices = JSON.parse(localStorage.getItem("member_prices"));
+
+			table_display_data = laundryValues(table_display_data, member_prices);
+
+			let data_arr = [];
+
+			$.each(table_display_data, function (index, item) {
+				data_arr.push("<tr>");
+				$.each(item, function (index, item_data) {
+					data_arr.push("<td id='item_data'>" + item_data + "</td>");
+				});
+			});
+
+			const laundry_table = $("#laundry_table");
+			laundry_table.append(data_arr.join(""));
+
+			let count = 0;
+			let sum = table_display_data[4].sum;
+
+			const best_buy_price = cleanPrice(table_display_data[4].best_buy_price);
+			if (best_buy_price != 0) {
+				count++;
+			}
+			const home_depot_price = cleanPrice(
+				table_display_data[4].home_depot_price
+			);
+			if (home_depot_price != 0) {
+				count++;
+			}
+			const lowes_price = cleanPrice(table_display_data[4].lowes_price);
+			if (lowes_price != 0) {
+				count++;
+			}
+
+			document.getElementById("delta_cell").innerText = Math.round(
+				(best_buy_price + home_depot_price + lowes_price) / count - sum
+			);
+
+			let weekly_deliveries = document.getElementById("weekly_deliveries");
+			let annualized = document.getElementById("annualized");
+			let delta = document.getElementById("delta_cell");
+			let total_annualized = document.getElementById("total_sum");
+			let four_piece_kitchen_annualized = localStorage.getItem(
+				"four_piece_kitchen_annualized_sum"
+			);
+			weekly_deliveries.addEventListener("input", function () {
+				annualized.innerText =
+					weekly_deliveries.value * 52 * parseInt(delta.innerText);
+
+				total =
+					weekly_deliveries.value * 52 * parseInt(delta.innerText) +
+					parseInt(four_piece_kitchen_annualized);
+
+				total_annualized.innerHTML = "Total Potential Annualized: " + total;
+			});
+			document.getElementById("submit").onclick = async () => {
+				await storeTableLaundry().then(downloadStoredTables());
+			};
+		};
+	</script>
+</head>
+
+<body>
+	<div id="table_container">
+		<table class="data_table" id="laundry_table">
+			<thead>
+				<tr>
+					<th>Service </td>
+					<th class="header">Best Buy Price</td>
+					<th class="header">Home Depot Price</td>
+					<th class="header">Lowes Price</td>
+					<th class="header">Your Price</td>
+				</tr>
+			</thead>
+		</table>
+
+		<p></p>
+
+		<table class="data_table" id="delta_table">
+			<tr>
+				<td id="item_data">Delta from competition average</td>
+				<td id="delta_cell"></td>
+			</tr>
+			<tr>
+				<td id="item_data">Laundry pairs delivered weekly</td>
+				<td><input type="number" id="weekly_deliveries" /></td>
+			</tr>
+			<tr>
+				<td id="item_data">Annual Opportunity</td>
+				<td id="annualized"></td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="sum_container">
+		<p id="sum_display"></p>
+
+		<p id="sum_explanation">
+			Annual Opportunity represents the delta from competition average &times;
+			number of kitchens delivered weekly &times; 52 weeks/year
+		</p>
+
+		<p></p>
+
+		<p id="total_sum">Annual Opportunity (Kitchen + Laundry):</p>
+		<button id="submit">submit</button>
+	</div>
+	<div id="next_prev_btns">
+		<a href="./four_piece_kitchen.html" class="previous round" id="prev_btn">&#8249;</a>
+	</div>
+</body>
+
+</html>
