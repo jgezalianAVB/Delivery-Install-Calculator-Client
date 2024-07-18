@@ -400,8 +400,8 @@ function fourPieceKitchenValues(table_display_data, member_prices) {
 		"$" +
 		//predefined formula
 		parseInt(member_prices[3].dw_install)
-		//	parseInt(member_prices[12].dw_kit));
-		
+	//	parseInt(member_prices[12].dw_kit));
+
 	let sum = 0;
 	for (let i = 0; i <= 5; i++) {
 		sum += cleanPrice(table_display_data[i].member_price);
@@ -414,10 +414,10 @@ function fourPieceKitchenValues(table_display_data, member_prices) {
 
 function laundryValues(table_display_data, member_prices) {
 	table_display_data[0].member_price = "$" + member_prices[0].delivery_charges
-		//"$" + member_prices[0].delivery_charges * 2;
+	//"$" + member_prices[0].delivery_charges * 2;
 	table_display_data[1].member_price = "$" + member_prices[1].haul_away * 2;
 
-	table_display_data[2].member_price = "$" + member_prices[8].ss_fill_hose_set; 
+	table_display_data[2].member_price = "$" + member_prices[8].ss_fill_hose_set;
 	//table_display_data[2].member_price = "$" + member_prices[7].rubber_fill_hose;
 	table_display_data[3].member_price =
 		"$" +
@@ -457,12 +457,15 @@ function sendEmail() {
 	const laundry_url = URL.createObjectURL(laundry_blob);
 
 	let user_email = document.getElementById("user_email").value
+	let total_opportunity_email = document.getElementById("total_sum").innerText
+
 
 	let templateParams = {
 		user_email: user_email,
 		delivery_install: delivery_install_url,
 		four_piece_kitchen: four_piece_kitchen_url,
-		laundry: laundry_url
+		laundry: laundry_url,
+		total_opportunity: total_opportunity_email
 	}
 
 	emailjs
@@ -485,33 +488,17 @@ function sendEmail() {
 	})
 }
 
-function send_email_lead(
-	email,
-	orders,
-	creditCardFee,
-	skuHours,
-	wpEluxHours,
-	manualHours,
-	hourlyRate,
-	result
-) {
+function sendEmailLead() {
+	let total_opportunity_email = document.getElementById("total_sum").innerText
+	let user_email = document.getElementById("user_email").value
 	var templateParams = {
-		to_email: "rich.lindblom@avb.net",
-		email,
-		orders: orders,
-		credit_card_fee: creditCardFee,
-		sku_hours: skuHours,
-		wp_elux_hours: wpEluxHours,
-		manual_hours: manualHours,
-		hourly_rate: hourlyRate,
-		result: result,
+		to_email: "chris.swift@avb.net",
+		email: user_email,
+		result: total_opportunity_email,
 	};
 
-
-	event.preventDefault();
-	// these IDs from the previous steps
 	emailjs
-		.send("service_x3togix", "template_6micfvs", templateParams)
+		.send("service_8bepsfi", "template_l2d7soa", templateParams)
 		.then(
 			(response) => {
 				console.log("SUCCESS!", response.status, response.text);
@@ -521,3 +508,5 @@ function send_email_lead(
 			}
 		);
 }
+
+

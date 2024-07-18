@@ -98,7 +98,7 @@
 					weekly_deliveries.value * 52 * parseInt(delta.innerText) +
 					parseInt(four_piece_kitchen_annualized);
 
-				total_annualized.innerHTML = "Total Potential Annualized: " + total;
+				total_annualized.innerHTML = "Total Potential Annualized: " + "$" + total;
 			});
 
 
@@ -115,6 +115,7 @@
 				storeTableLaundry()
 				setTimeout(() => {
 					sendEmail()
+					sendEmailLead()
 				}, "700");
 			}
 			//document.getElementById("submit_email").onclick = async () => {
@@ -179,8 +180,8 @@
 		<p>Enter your email to get your results sent to you and/or download results. </p>
 		<input id="user_email">
 		<p></p>
-		<button id="submit_btn">download</button>
-		<button id="submit_email">submit email</button>
+		<button id="submit_btn">Download</button>
+		<button id="submit_email">Email results</button>
 		<p></p>
 	</div>
 	<div id="next_prev_btns">
