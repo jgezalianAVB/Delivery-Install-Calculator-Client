@@ -157,7 +157,7 @@ async function storeTableDeliveryInstall() {
 			}
 		}
 
-		
+
 		function rename(obj, oldName, newName) {
 			if (!obj.hasOwnProperty(oldName)) {
 				return false;
@@ -313,7 +313,7 @@ function downloadStoredTables() {
 	let delivery_install_csv = jsonToCsv(delivery_install_data);
 	let four_piece_kitchen_csv = jsonToCsvWithDelta(four_piece_kitchen_data);
 	let laundry_csv = jsonToCsvWithDelta(laundry_data);
-	
+
 
 	download(delivery_install_csv, "delivery_install")
 	download(four_piece_kitchen_csv, "four_piece_kitchen")
@@ -399,8 +399,9 @@ function fourPieceKitchenValues(table_display_data, member_prices) {
 	table_display_data[5].member_price =
 		"$" +
 		//predefined formula
-		(parseInt(member_prices[3].dw_install) +
-			parseInt(member_prices[12].dw_kit));
+		parseInt(member_prices[3].dw_install)
+		//	parseInt(member_prices[12].dw_kit));
+		
 	let sum = 0;
 	for (let i = 0; i <= 5; i++) {
 		sum += cleanPrice(table_display_data[i].member_price);
@@ -412,10 +413,12 @@ function fourPieceKitchenValues(table_display_data, member_prices) {
 }
 
 function laundryValues(table_display_data, member_prices) {
-	table_display_data[0].member_price =
-		"$" + member_prices[0].delivery_charges * 2;
+	table_display_data[0].member_price = "$" + member_prices[0].delivery_charges
+		//"$" + member_prices[0].delivery_charges * 2;
 	table_display_data[1].member_price = "$" + member_prices[1].haul_away * 2;
-	table_display_data[2].member_price = "$" + member_prices[7].rubber_fill_hose;
+
+	table_display_data[2].member_price = "$" + member_prices[8].ss_fill_hose_set; 
+	//table_display_data[2].member_price = "$" + member_prices[7].rubber_fill_hose;
 	table_display_data[3].member_price =
 		"$" +
 		(parseInt(member_prices[9].vent_kit) +
@@ -466,6 +469,7 @@ function sendEmail() {
 		.send("service_8bepsfi", "template_cq922bs", templateParams)
 		.then(
 			(response) => {
+				alert("email sent")
 				console.log("SUCCESS!", response.status, response.text);
 			},
 			(error) => {
