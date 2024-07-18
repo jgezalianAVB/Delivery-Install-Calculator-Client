@@ -280,6 +280,7 @@ function downloadStoredTables() {
 	download(delivery_install_csv, "delivery_install")
 	download(four_piece_kitchen_csv, "four_piece_kitchen")
 	download(laundry_csv, "laundry");
+
 }
 
 function jsonToCsv(jsonData) {
@@ -376,4 +377,65 @@ function laundryValues(table_display_data, member_prices) {
 	table_display_data[4].sum = sum;
 	table_display_data[5].text = "How has your pricing changed?";
 	return table_display_data;
+}
+
+
+function sendEmail() {
+	let delivery_install_data = JSON.parse(localStorage.getItem("delivery_install_download_data"))
+	let delivery_install_csv = jsonToCsv(delivery_install_data);
+
+	const blob = new Blob([delivery_install_csv], { type: "text/csv" });
+	const url = URL.createObjectURL(blob);
+	results = url
+
+	let templateParams = {
+		results: results
+	}
+	emailjs
+		.send("service_8bepsfi", "template_cq922bs", templateParams)
+		.then(
+			(response) => {
+				console.log("SUCCESS!", response.status, response.text);
+			},
+			(error) => {
+				console.log("FAILED...", error);
+			}
+		);
+}
+
+function send_email_lead(
+	email,
+	orders,
+	creditCardFee,
+	skuHours,
+	wpEluxHours,
+	manualHours,
+	hourlyRate,
+	result
+) {
+	var templateParams = {
+		to_email: "rich.lindblom@avb.net",
+		email,
+		orders: orders,
+		credit_card_fee: creditCardFee,
+		sku_hours: skuHours,
+		wp_elux_hours: wpEluxHours,
+		manual_hours: manualHours,
+		hourly_rate: hourlyRate,
+		result: result,
+	};
+
+
+	event.preventDefault();
+	// these IDs from the previous steps
+	emailjs
+		.send("service_x3togix", "template_6micfvs", templateParams)
+		.then(
+			(response) => {
+				console.log("SUCCESS!", response.status, response.text);
+			},
+			(error) => {
+				console.log("FAILED...", error);
+			}
+		);
 }

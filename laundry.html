@@ -98,10 +98,22 @@
 
 				total_annualized.innerHTML = "Total Potential Annualized: " + total;
 			});
-			document.getElementById("submit").onclick = async () => {
+			document.getElementById("submit_btn").onclick = async () => {
 				await storeTableLaundry().then(downloadStoredTables());
 			};
+			document.getElementById("submit_email").onclick = async () => {
+				await sendEmail();
+			};
 		};
+	</script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+	<script type="text/javascript">
+		(function () {
+			// https://dashboard.emailjs.com/admin/account
+			emailjs.init({
+				publicKey: "p5iPDJweEfjfRmPzX",
+			});
+		})();
 	</script>
 </head>
 
@@ -148,7 +160,14 @@
 		<p></p>
 
 		<p id="total_sum">Annual Opportunity (Kitchen + Laundry):</p>
-		<button id="submit">submit</button>
+		<p></p>
+	</div>
+	<div id="submit">
+		<p>Enter your email to get your results sent to you and/or download results. </p>
+		<input id="user_email">
+		<button id="submit_btn">download</button>
+		<button id="submit_email">submit email</button>
+		<p></p>
 	</div>
 	<div id="next_prev_btns">
 		<a href="./four_piece_kitchen.html" class="previous round" id="prev_btn">&#8249;</a>
