@@ -382,14 +382,27 @@ function laundryValues(table_display_data, member_prices) {
 
 function sendEmail() {
 	let delivery_install_data = JSON.parse(localStorage.getItem("delivery_install_download_data"))
-	let delivery_install_csv = jsonToCsv(delivery_install_data);
+	let four_piece_kitchen_data = JSON.parse(localStorage.getItem("four_piece_kitchen_download_data"))
+	let laundry_data = JSON.parse(localStorage.getItem("laundry_download_data"))
 
-	const blob = new Blob([delivery_install_csv], { type: "text/csv" });
-	const url = URL.createObjectURL(blob);
-	results = url
+	let delivery_install_csv = jsonToCsv(delivery_install_data);
+	let four_piece_kitchen_csv = jsonToCsvWithDelta(four_piece_kitchen_data);
+	let laundry_csv = jsonToCsvWithDelta(laundry_data);
+
+	const delivery_install_blob = new Blob([delivery_install_csv], { type: "text/csv" });
+	const delivery_install_url = URL.createObjectURL(delivery_install_blob);
+
+	const four_piece_kitchen_blob = new Blob([four_piece_kitchen_csv], { type: "text/csv" });
+	const four_piece_kitchen_url = URL.createObjectURL(four_piece_kitchen_blob);
+
+	const laundry_blob = new Blob([laundry_csv], { type: "text/csv" });
+	const laundry_url = URL.createObjectURL(laundry_blob);
+
 
 	let templateParams = {
-		results: results
+		deliver_install: delivery_install_url,
+		four_piece_kitchen: four_piece_kitchen_url,
+		laundry: laundry_url
 	}
 	emailjs
 		.send("service_8bepsfi", "template_cq922bs", templateParams)
