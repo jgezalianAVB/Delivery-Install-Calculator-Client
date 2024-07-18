@@ -100,12 +100,26 @@
 
 				total_annualized.innerHTML = "Total Potential Annualized: " + total;
 			});
-			document.getElementById("submit_btn").onclick = async () => {
-				await storeTableLaundry().then(downloadStoredTables());
-			};
-			document.getElementById("submit_email").onclick = async () => {
-				await storeTableLaundry().then(sendEmail());
-			};
+
+
+			submit_button = document.getElementById("submit_btn")
+			submit_button.onclick = function () {
+				storeTableLaundry()
+				setTimeout(() => {
+					downloadStoredTables()
+				}, "700");
+				
+			}
+			email_button = document.getElementById("submit_email")
+			email_button.onclick = function() {
+				storeTableLaundry()
+				setTimeout(() => {
+					sendEmail()
+				}, "700");
+			}
+			//document.getElementById("submit_email").onclick = async () => {
+			//	await storeTableLaundry().then(sendEmail());
+			//};
 		};
 	</script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>

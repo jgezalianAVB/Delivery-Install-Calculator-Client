@@ -28,6 +28,7 @@
 
 
 		window.onload = async (event) => {
+			//get data from google sheet
 			await $.getJSON(
 				"https://nodetest-f6jnhptmxa-uc.a.run.app/four_piece_kitchen",
 				function (result) {
@@ -47,15 +48,25 @@
 				localStorage.getItem("four_piece_kitchen_display_data")
 			);
 
+			//member prices from previous page
 			const member_prices = JSON.parse(localStorage.getItem("member_prices"));
+
 
 			table_display_data = fourPieceKitchenValues(
 				table_display_data,
 				member_prices
 			);
 
+			//table display data example:
+			//best_buy_price : "$30"
+			//home_depot_price : "$29"
+			//lowes_price : "$29"
+			//member_price : "$1"
+			//service : "Delivery"
+
 			let data_arr = [];
 
+			//push table elements to array
 			$.each(table_display_data, function (index, item) {
 				data_arr.push("<tr>");
 				$.each(item, function (index, item_data) {
@@ -63,10 +74,13 @@
 				});
 			});
 
+
+			//render table
 			const four_piece_kitchen_table = $("#four_piece_kitchen_table");
 			four_piece_kitchen_table.append(data_arr.join(""));
 
 			let count = 0;
+			//sum comes from fourPieceKitchenValues()
 			let sum = table_display_data[6].sum;
 			const best_buy_price = cleanPrice(table_display_data[6].best_buy_price);
 			if (best_buy_price != 0) {
@@ -83,6 +97,7 @@
 				count++;
 			}
 
+			//calculate competitor average - member price sum
 			document.getElementById("delta_cell").innerText = Math.round(
 				(best_buy_price + home_depot_price + lowes_price) / count - cleanPrice(sum)
 			);

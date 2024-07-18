@@ -65,6 +65,7 @@
 	</div>
 	<script>
 
+		//declare services to use in table rendering 
 		const services = [
 			"delivery_charges",
 			"haul_away",
@@ -87,19 +88,24 @@
 
 		window.onload = async (event) => {
 
+			//get latest data from google sheet
 			await $.getJSON(
 				"https://nodetest-f6jnhptmxa-uc.a.run.app/delivery_install",
 				function (result) {
+
+					//if old data exists, delete it
 					if (localStorage.getItem("delivery_install_display_data") != null) {
 						localStorage.removeItem("delivery_install_display_data");
 					}
 
+					//set new local storage data 
 					let table_display_data = result;
 					localStorage.setItem(
 						"delivery_install_display_data",
 						JSON.stringify(table_display_data)
 					);
 
+					//assign services declared above to copy of data to use in average calculation
 					const price_data = result;
 					price_data.forEach(function (element, index) {
 						element.service = services[index];
@@ -113,20 +119,34 @@
 				}
 			);
 
+			//get table display data from local storage
 			const table_display_data = JSON.parse(
 				localStorage.getItem("delivery_install_display_data")
 			);
 
 			let data_arr = [];
 
+			//render table by looping through display data and creating td and member inputs
+			//example of table_display_data item: 
+
+			//{
+			//best_buy_price : "$30 $399+ | $99 <$399",
+			//home_depot_price : "Free",
+			//lowes_price : "$29 $399+ | $79 <$399",
+			//service : "Delivery Charges Updated 3/13/2024"
+			//}
+
+			//for each item in table_display_data, create table row, store in data_arr
 			$.each(table_display_data, function (index, item) {
 				data_arr.push("<tr>");
+				//for each element in item, create table cell
 				$.each(item, function (index, item_data) {
 					data_arr.push("<td id='item_data'>" + item_data + "</td>");
 				});
-
+				//add member input
 				data_arr.push("<td class='member_input_td'>");
 				data_arr.push("<input/>");
+				//add cell where difference will populate
 				data_arr.push(
 					"<td class='difference_td' id=" +
 					'"' +
@@ -135,34 +155,36 @@
 					'"' +
 					"/>"
 				);
+				//close table row
 				data_arr.push("</tr>");
 			});
 
+			//get element (defined in index.html)
 			const delivery_install_table = $("#delivery_install_table");
-
+			//append data_arr to table
 			delivery_install_table.append(data_arr.join(""));
 
 			$("input").addClass("member_input");
-
+			//add service name as id for input
 			$("input").each(function (index, element) {
 				$(element).attr("id", services[index]);
 			});
 
+			//add event listener to calculate (competitor average - member input) for each input field
 			inputs = document.querySelectorAll(".member_input");
 			inputs.forEach((element) => {
 				element.addEventListener("input", function () {
 					let input_id = this.id;
 					let member_value = parseInt(this.value);
-					//$(".member_input_td").text(member_value);
 					let average = calculateAverage(input_id);
 					let difference_td_id = document.getElementById(
 						input_id + "_difference"
 					).id;
 					populateDifference(input_id, difference_td_id, average);
-					//calculateSum();
 				});
 			});
 
+			//get all inputs
 			const four_piece_input = document.getElementById("four_piece_delivery");
 			four_piece_input.readOnly = true;
 			const delivery_input = document.getElementById("delivery_charges");
@@ -171,6 +193,9 @@
 			const dw_install_input = document.getElementById("dw_install");
 			const range_cord_input = document.getElementById("range_cord");
 			const h2o_hook_up_input = document.getElementById("h2o_hook_up");
+
+			//add event listener to h2o hookup field as we will use all previous inputs to calculate four piece input placeholder
+			//if all fields have values, calculate four_piece delivery and populate placeholder
 			h2o_hook_up_input.addEventListener("input", function () {
 				if (
 					delivery_input.value.length >= 1 &&
@@ -190,6 +215,7 @@
 
 					four_piece_input.placeholder = four_piece_member_price;
 
+					//get competitor four piece prices
 					let table = document.getElementById("delivery_install_table");
 					let lastRow = table.rows[table.rows.length - 1];
 					let best_buy_price = cleanPrice(lastRow.cells[1].innerText);
@@ -200,16 +226,19 @@
 						"four_piece_delivery_difference"
 					);
 
+					//competitor average - member input
 					let difference = Math.round(
 						(best_buy_price + home_depot_price + lowes_price) / 3 -
 						four_piece_member_price
 					);
+					//populate four piece difference 
 					four_piece_difference.innerText = "$" + difference;
 					let sum_display = document.getElementById("sum_display");
 					sum_display.innerText = "$" + difference;
 				}
 			});
 
+			//store member inputs and all table data 
 			document.getElementById("next_btn").onclick = async () => {
 				await storeMemberInputs();
 				await storeTableDeliveryInstall();
