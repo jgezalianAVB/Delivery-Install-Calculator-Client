@@ -306,21 +306,17 @@ function storeTableLaundry() {
 }
 
 function downloadStoredTables() {
-	//let delivery_install_data = JSON.parse(localStorage.getItem("delivery_install_download_data"))
-	//let four_piece_kitchen_data = JSON.parse(localStorage.getItem("four_piece_kitchen_download_data"))
+	let delivery_install_data = JSON.parse(localStorage.getItem("delivery_install_download_data"))
+	let four_piece_kitchen_data = JSON.parse(localStorage.getItem("four_piece_kitchen_download_data"))
 	let laundry_data = JSON.parse(localStorage.getItem("laundry_download_data"))
-	console.log(laundry_data)
 
-	//let delivery_install_csv = jsonToCsv(delivery_install_data);
-	//let four_piece_kitchen_csv = jsonToCsvWithDelta(four_piece_kitchen_data);
+	let delivery_install_csv = jsonToCsv(delivery_install_data);
+	let four_piece_kitchen_csv = jsonToCsvWithDelta(four_piece_kitchen_data);
 	let laundry_csv = jsonToCsvWithDelta(laundry_data);
-
-
-
 	
 
-	//download(delivery_install_csv, "delivery_install")
-	//download(four_piece_kitchen_csv, "four_piece_kitchen")
+	download(delivery_install_csv, "delivery_install")
+	download(four_piece_kitchen_csv, "four_piece_kitchen")
 	download(laundry_csv, "laundry");
 
 	let total_opportunity = document.getElementById("total_sum").innerText
