@@ -259,7 +259,6 @@ async function storeTableLaundry() {
 			"Delta from competition average": delta_text, "Laundry pairs delivered weekly": weekly_deliveries, "Annual Opportunity": annualized, "Total Annual Opportunity (Kitchen + Laundry)": total_opportunity
 		}]
 
-		console.log(delta_obj)
 
 		laundry_download_data = td_arr.concat(delta_obj);
 
@@ -283,6 +282,15 @@ function downloadStoredTables() {
 	download(delivery_install_csv, "delivery_install")
 	download(four_piece_kitchen_csv, "four_piece_kitchen")
 	download(laundry_csv, "laundry");
+
+
+	let user_email = document.getElementById("user_email").value
+
+	dataLayer.push({ 
+		"event": "download",
+		"user_email": user_email,
+		"total_opportunity" : total_opportunity
+	})
 
 }
 
@@ -422,6 +430,13 @@ function sendEmail() {
 				console.log("FAILED...", error);
 			}
 		);
+
+	let total_opportunity = document.getElementById("total_sum").innerText
+	dataLayer.push({ 
+		"event": "email_submitted",
+		"user_email" : user_email,
+		"total_opportunity" : total_opportunity
+	})
 }
 
 function send_email_lead(
