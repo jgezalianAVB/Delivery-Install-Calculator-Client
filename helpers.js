@@ -253,10 +253,13 @@ async function storeTableLaundry() {
 		let delta_text = document.getElementById("delta_cell").innerText
 		let weekly_deliveries = document.getElementById("weekly_deliveries").value
 		let annualized = document.getElementById("annualized").innerText
+		let total_opportunity = document.getElementById("total_sum").innerText
 
 		let delta_obj = [{
-			"Delta from competition average": delta_text, "Laundry pairs delivered weekly": weekly_deliveries, "Annual Opportunity": annualized
+			"Delta from competition average": delta_text, "Laundry pairs delivered weekly": weekly_deliveries, "Annual Opportunity": annualized, "Total Annual Opportunity (Kitchen + Laundry)": total_opportunity
 		}]
+
+		console.log(delta_obj)
 
 		laundry_download_data = td_arr.concat(delta_obj);
 
@@ -389,6 +392,8 @@ function sendEmail() {
 	let four_piece_kitchen_csv = jsonToCsvWithDelta(four_piece_kitchen_data);
 	let laundry_csv = jsonToCsvWithDelta(laundry_data);
 
+
+
 	const delivery_install_blob = new Blob([delivery_install_csv], { type: "text/csv" });
 	const delivery_install_url = URL.createObjectURL(delivery_install_blob);
 
@@ -398,12 +403,15 @@ function sendEmail() {
 	const laundry_blob = new Blob([laundry_csv], { type: "text/csv" });
 	const laundry_url = URL.createObjectURL(laundry_blob);
 
+	let user_email = document.getElementById("user_email").value
 
 	let templateParams = {
-		deliver_install: delivery_install_url,
+		user_email: user_email,
+		delivery_install: delivery_install_url,
 		four_piece_kitchen: four_piece_kitchen_url,
 		laundry: laundry_url
 	}
+
 	emailjs
 		.send("service_8bepsfi", "template_cq922bs", templateParams)
 		.then(

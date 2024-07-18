@@ -102,7 +102,7 @@
 				await storeTableLaundry().then(downloadStoredTables());
 			};
 			document.getElementById("submit_email").onclick = async () => {
-				await sendEmail();
+				await storeTableLaundry().then(sendEmail());
 			};
 		};
 	</script>
@@ -156,21 +156,19 @@
 			Annual Opportunity represents the delta from competition average &times;
 			number of kitchens delivered weekly &times; 52 weeks/year
 		</p>
-
-		<p></p>
-
 		<p id="total_sum">Annual Opportunity (Kitchen + Laundry):</p>
-		<p></p>
 	</div>
+
 	<div id="submit">
 		<p>Enter your email to get your results sent to you and/or download results. </p>
 		<input id="user_email">
+		<p></p>
 		<button id="submit_btn">download</button>
 		<button id="submit_email">submit email</button>
 		<p></p>
 	</div>
 	<div id="next_prev_btns">
-		<a href="./four_piece_kitchen.html" class="previous round" id="prev_btn">&#8249;</a>
+		<!-- <a href="./four_piece_kitchen.html" class="previous round" id="prev_btn">&#8249;</a> -->
 	</div>
 </body>
 

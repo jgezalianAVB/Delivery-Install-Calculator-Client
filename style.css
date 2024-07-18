@@ -81,11 +81,20 @@ td {
 }
 
 #submit {
+  font-size: larger;
   display: grid;              /* establish flex container */
   flex-direction: column;     /* stack flex items vertically */
   justify-content: center;    /* center items vertically, in this case */
   align-items: center;        /* center items horizontally, in this case */
   height: 30px;
+}
+
+#submit_btn {
+  font-size: larger;
+}
+
+#submit_email {
+  font-size: larger;
 }
 
 #sum_display {
@@ -113,9 +122,9 @@ td {
 #next_prev_btns {
   display: flex;              /* establish flex container */
   flex-direction: column;   
-  justify-content: center;    /* center items vertically, in this case */
+  /* center items vertically, in this case */
   align-items: center; 
-  height: 300px;  
+  height: 210px;  
 }
 
 #next_prev_btns a {
