@@ -4,6 +4,7 @@ table {
   border-collapse: collapse;
 }
 
+
 #table_container {
   display: flex;              /* establish flex container */
   flex-direction: column;     /* stack flex items vertically */

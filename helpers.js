@@ -1,4 +1,3 @@
-
 function cleanPrice(price) {
 	const match_dollar = /\$[0-9]+(\.[0-9][0-9])?/g;
 	$.trim(price);
@@ -11,7 +10,6 @@ function cleanPrice(price) {
 }
 
 function calculateAverage(service) {
-
 	//price data item example:
 	//{
 	//best_buy_price : "$30 $399+ | $99 <$399",
@@ -157,7 +155,6 @@ async function storeTableDeliveryInstall() {
 			}
 		}
 
-
 		function rename(obj, oldName, newName) {
 			if (!obj.hasOwnProperty(oldName)) {
 				return false;
@@ -174,7 +171,6 @@ async function storeTableDeliveryInstall() {
 				rename(sub_arr, el, data_keys[index]);
 			});
 		}
-
 
 		localStorage.setItem(
 			"delivery_install_download_data",
@@ -224,16 +220,19 @@ async function storeTableFourPieceKitchen() {
 		}
 
 		//need to get data from delta table
-		let delta_text = document.getElementById("delta_cell").innerText
-		let weekly_deliveries = document.getElementById("weekly_deliveries").value
-		let annualized = document.getElementById("annualized").innerText
+		let delta_text = document.getElementById("delta_cell").innerText;
+		let weekly_deliveries = document.getElementById("weekly_deliveries").value;
+		let annualized = document.getElementById("annualized").innerText;
 
-		let delta_obj = [{
-			"Delta from competition average": delta_text, "Kitchens delivered weekly": weekly_deliveries, "Annual Opportunity": annualized
-		}]
+		let delta_obj = [
+			{
+				"Delta from competition average": delta_text,
+				"Kitchens delivered weekly": weekly_deliveries,
+				"Annual Opportunity": annualized,
+			},
+		];
 
-		four_piece_download_data = (td_arr.concat(delta_obj));
-
+		four_piece_download_data = td_arr.concat(delta_obj);
 
 		localStorage.setItem(
 			"four_piece_kitchen_download_data",
@@ -266,7 +265,6 @@ function storeTableLaundry() {
 				}
 			});
 
-
 		function rename(obj, oldName, newName) {
 			if (!obj.hasOwnProperty(oldName)) {
 				return false;
@@ -283,16 +281,19 @@ function storeTableLaundry() {
 			});
 		}
 
+		let delta_text = document.getElementById("delta_cell").innerText;
+		let weekly_deliveries = document.getElementById("weekly_deliveries").value;
+		let annualized = document.getElementById("annualized").innerText;
+		let total_opportunity = document.getElementById("total_sum").innerText;
 
-		let delta_text = document.getElementById("delta_cell").innerText
-		let weekly_deliveries = document.getElementById("weekly_deliveries").value
-		let annualized = document.getElementById("annualized").innerText
-		let total_opportunity = document.getElementById("total_sum").innerText
-
-		let delta_obj = [{
-			"Delta from competition average": delta_text, "Laundry pairs delivered weekly": weekly_deliveries, "Annual Opportunity": annualized, "Total Annual Opportunity (Kitchen + Laundry)": total_opportunity
-		}]
-
+		let delta_obj = [
+			{
+				"Delta from competition average": delta_text,
+				"Laundry pairs delivered weekly": weekly_deliveries,
+				"Annual Opportunity": annualized,
+				"Total Annual Opportunity (Kitchen + Laundry)": total_opportunity,
+			},
+		];
 
 		laundry_download_data = td_arr.concat(delta_obj);
 
@@ -300,34 +301,34 @@ function storeTableLaundry() {
 			"laundry_download_data",
 			JSON.stringify(laundry_download_data)
 		);
-
 	});
-
 }
 
 function downloadStoredTables() {
-	let delivery_install_data = JSON.parse(localStorage.getItem("delivery_install_download_data"))
-	let four_piece_kitchen_data = JSON.parse(localStorage.getItem("four_piece_kitchen_download_data"))
-	let laundry_data = JSON.parse(localStorage.getItem("laundry_download_data"))
+	let delivery_install_data = JSON.parse(
+		localStorage.getItem("delivery_install_download_data")
+	);
+	let four_piece_kitchen_data = JSON.parse(
+		localStorage.getItem("four_piece_kitchen_download_data")
+	);
+	let laundry_data = JSON.parse(localStorage.getItem("laundry_download_data"));
 
 	let delivery_install_csv = jsonToCsv(delivery_install_data);
 	let four_piece_kitchen_csv = jsonToCsvWithDelta(four_piece_kitchen_data);
 	let laundry_csv = jsonToCsvWithDelta(laundry_data);
 
-
-	download(delivery_install_csv, "delivery_install")
-	download(four_piece_kitchen_csv, "four_piece_kitchen")
+	download(delivery_install_csv, "delivery_install");
+	download(four_piece_kitchen_csv, "four_piece_kitchen");
 	download(laundry_csv, "laundry");
 
-	let total_opportunity = document.getElementById("total_sum").innerText
-	let user_email = document.getElementById("user_email").value
+	let total_opportunity = document.getElementById("total_sum").innerText;
+	let user_email = document.getElementById("user_email").value;
 
 	dataLayer.push({
-		"event": "download",
-		"user_email": user_email,
-		"total_opportunity": total_opportunity
-	})
-
+		event: "download",
+		user_email: user_email,
+		total_opportunity: total_opportunity,
+	});
 }
 
 //https://www.geeksforgeeks.org/how-to-convert-json-object-to-csv-in-javascript/
@@ -353,7 +354,7 @@ function jsonToCsvWithDelta(jsonData) {
 
 	// Extract headers
 	let headers = Object.keys(jsonData[0]);
-	let delta_headers = Object.keys(jsonData[jsonData.length - 1])
+	let delta_headers = Object.keys(jsonData[jsonData.length - 1]);
 	csv += headers.join(",") + "\n";
 
 	// Extract values
@@ -399,7 +400,7 @@ function fourPieceKitchenValues(table_display_data, member_prices) {
 	table_display_data[5].member_price =
 		"$" +
 		//predefined formula
-		parseInt(member_prices[3].dw_install)
+		parseInt(member_prices[3].dw_install);
 	//	parseInt(member_prices[12].dw_kit));
 
 	let sum = 0;
@@ -413,7 +414,7 @@ function fourPieceKitchenValues(table_display_data, member_prices) {
 }
 
 function laundryValues(table_display_data, member_prices) {
-	table_display_data[0].member_price = "$" + member_prices[0].delivery_charges
+	table_display_data[0].member_price = "$" + member_prices[0].delivery_charges;
 	//"$" + member_prices[0].delivery_charges * 2;
 	table_display_data[1].member_price = "$" + member_prices[1].haul_away * 2;
 
@@ -434,79 +435,125 @@ function laundryValues(table_display_data, member_prices) {
 	return table_display_data;
 }
 
-
 function sendEmail() {
 	//using email.js
-	let delivery_install_data = JSON.parse(localStorage.getItem("delivery_install_download_data"))
-	let four_piece_kitchen_data = JSON.parse(localStorage.getItem("four_piece_kitchen_download_data"))
-	let laundry_data = JSON.parse(localStorage.getItem("laundry_download_data"))
+	let delivery_install_data = JSON.parse(
+		localStorage.getItem("delivery_install_download_data")
+	);
+	let four_piece_kitchen_data = JSON.parse(
+		localStorage.getItem("four_piece_kitchen_download_data")
+	);
+	let laundry_data = JSON.parse(localStorage.getItem("laundry_download_data"));
 
 	let delivery_install_csv = jsonToCsv(delivery_install_data);
 	let four_piece_kitchen_csv = jsonToCsvWithDelta(four_piece_kitchen_data);
 	let laundry_csv = jsonToCsvWithDelta(laundry_data);
 
-
-
-	const delivery_install_blob = new Blob([delivery_install_csv], { type: "text/csv" });
+	const delivery_install_blob = new Blob([delivery_install_csv], {
+		type: "text/csv",
+	});
 	const delivery_install_url = URL.createObjectURL(delivery_install_blob);
 
-	const four_piece_kitchen_blob = new Blob([four_piece_kitchen_csv], { type: "text/csv" });
+	const four_piece_kitchen_blob = new Blob([four_piece_kitchen_csv], {
+		type: "text/csv",
+	});
 	const four_piece_kitchen_url = URL.createObjectURL(four_piece_kitchen_blob);
 
 	const laundry_blob = new Blob([laundry_csv], { type: "text/csv" });
 	const laundry_url = URL.createObjectURL(laundry_blob);
 
-	let user_email = document.getElementById("user_email").value
-	let total_opportunity_email = document.getElementById("total_sum").innerText
-
+	let user_email = document.getElementById("user_email").value;
+	let total_opportunity = document.getElementById("total_sum").innerText;
 
 	let templateParams = {
-		user_email: user_email,
+		email: user_email,
 		delivery_install: delivery_install_url,
 		four_piece_kitchen: four_piece_kitchen_url,
 		laundry: laundry_url,
-		total_opportunity: total_opportunity_email
-	}
+		total_opportunity: total_opportunity,
+	};
 
-	emailjs
-		.send("service_8bepsfi", "template_cq922bs", templateParams)
-		.then(
-			(response) => {
-				alert("email sent")
-				console.log("SUCCESS!", response.status, response.text);
-			},
-			(error) => {
-				console.log("FAILED...", error);
-			}
-		);
+	let templateParamsLead = {
+		to_email: "marketing@avb.net",
+		email: user_email,
+		delivery_install: delivery_install_url,
+		four_piece_kitchen: four_piece_kitchen_url,
+		laundry: laundry_url,
+		result: total_opportunity,
+	};
 
-	let total_opportunity = document.getElementById("total_sum").innerText
+	//user email
+	emailjs.send("service_6c8n4sr", "template_f2n852j", templateParams).then(
+		(response) => {
+			alert("email sent");
+			console.log("SUCCESS!", response.status, response.text);
+		},
+		(error) => {
+			console.log("FAILED...", error);
+		}
+	);	
+	
+	//lead email
+	emailjs.send("service_6c8n4sr", "template_dljxoxl", templateParamsLead).then(
+		(response) => {
+			console.log("SUCCESS!", response.status, response.text);
+		},
+		(error) => {
+			console.log("FAILED...", error);
+		}
+	);
+
 	dataLayer.push({
-		"event": "email_submitted",
-		"user_email": user_email,
-		"total_opportunity": total_opportunity
-	})
+		event: "email_submitted",
+		user_email: user_email,
+		total_opportunity: total_opportunity,
+	});
 }
 
 function sendEmailLead() {
-	let total_opportunity_email = document.getElementById("total_sum").innerText
-	let user_email = document.getElementById("user_email").value
+	let delivery_install_data = JSON.parse(
+		localStorage.getItem("delivery_install_download_data")
+	);
+	let four_piece_kitchen_data = JSON.parse(
+		localStorage.getItem("four_piece_kitchen_download_data")
+	);
+	let laundry_data = JSON.parse(localStorage.getItem("laundry_download_data"));
+
+	let delivery_install_csv = jsonToCsv(delivery_install_data);
+	let four_piece_kitchen_csv = jsonToCsvWithDelta(four_piece_kitchen_data);
+	let laundry_csv = jsonToCsvWithDelta(laundry_data);
+
+	const delivery_install_blob = new Blob([delivery_install_csv], {
+		type: "text/csv",
+	});
+	const delivery_install_url = URL.createObjectURL(delivery_install_blob);
+
+	const four_piece_kitchen_blob = new Blob([four_piece_kitchen_csv], {
+		type: "text/csv",
+	});
+	const four_piece_kitchen_url = URL.createObjectURL(four_piece_kitchen_blob);
+
+	const laundry_blob = new Blob([laundry_csv], { type: "text/csv" });
+	const laundry_url = URL.createObjectURL(laundry_blob);
+
+	let total_opportunity_email = document.getElementById("total_sum").innerText;
+	let user_email = document.getElementById("user_email").value;
+	
 	var templateParams = {
-		to_email: "chris.swift@avb.net",
+		to_email: "marketing@avb.net",
 		email: user_email,
+		delivery_install: delivery_install_url,
+		four_piece_kitchen: four_piece_kitchen_url,
+		laundry: laundry_url,
 		result: total_opportunity_email,
 	};
 
-	emailjs
-		.send("service_8bepsfi", "template_l2d7soa", templateParams)
-		.then(
-			(response) => {
-				console.log("SUCCESS!", response.status, response.text);
-			},
-			(error) => {
-				console.log("FAILED...", error);
-			}
-		);
+	emailjs.send("service_6c8n4sr", "template_dljxoxl", templateParams).then(
+		(response) => {
+			console.log("SUCCESS!", response.status, response.text);
+		},
+		(error) => {
+			console.log("FAILED...", error);
+		}
+	);
 }
-
-

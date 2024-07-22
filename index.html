@@ -188,6 +188,12 @@
 			const four_piece_input = document.getElementById("four_piece_delivery");
 			four_piece_input.readOnly = true;
 			const delivery_input = document.getElementById("delivery_charges");
+			delivery_input.addEventListener("input", function () {
+				dataLayer.push({
+					"event": "form_start"
+				})
+
+			})
 			const haul_away_input = document.getElementById("haul_away");
 			const otr_install_input = document.getElementById("otr_install");
 			const dw_install_input = document.getElementById("dw_install");
