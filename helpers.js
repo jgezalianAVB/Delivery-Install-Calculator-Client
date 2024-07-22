@@ -485,7 +485,7 @@ function sendEmail() {
 	//user email
 	emailjs.send("service_6c8n4sr", "template_f2n852j", templateParams).then(
 		(response) => {
-			alert("email sent");
+			alert("Check Your Inbox For Links To Your Files");
 			console.log("SUCCESS!", response.status, response.text);
 		},
 		(error) => {
